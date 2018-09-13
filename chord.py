@@ -1,10 +1,16 @@
 from scale import *
 
 class Chord(Scale):
+    """
+    A chord is any harmonic set of pitches consisting of two or more (usually three or more) notes
+    (also called "pitches") that are heard as if sounding simultaneously.
+    (For many practical and theoretical purposes, arpeggios and broken chords,
+    or sequences of chord tones, may also be considered as chords.)
+    """
     name = 'UnknowChord'
-    interval_keys = ['P1']
+    interval_keys = []
     def __init__(self,roots):
-        Scale.__init__(self,self.interval_keys)
+        Scale.__init__(self,self.interval_keys[:])
         self.roots = roots
         self.bases = roots
     def __repr__(self):
@@ -15,28 +21,135 @@ class Chord(Scale):
         return '{0}{1}'.format(str_name, str_members)
 
     def add(self,intervals):
-        name = self.name + '_add' + ''.join([i[1:] for i in intervals])
-        self.extend_chord(self.interval_keys+intervals, name)
-        return self
+        """
+        An added tone chord is a triad chord with an added, non-tertian note,
+        such as the commonly added sixth as well as chords with an added
+        ninth(second) or eleventh (fourth) or a combination of the three.
+
+        >>> CM = Major_Triad(do)
+        >>> CM.add(['M9'])
+        >>> CM
+        Major_Triad_add9: [0, 4, 7, 14]
+        >>> CM.default()
+        >>> CM.add([])
+        >>> CM
+        Major_Triad: [0, 4, 7]
+        >>> CM.add(['M6','M9'])
+        >>> CM.add(['P11'])
+        >>> CM
+        Major_Triad_add6_add9_add11: [0, 4, 7, 9, 14, 17]
+        """
+        new_name = self.name + ''.join(['_add' + i[1:] for i in intervals])
+        self.extend_chord(self.interval_keys+intervals, new_name)
 
     def aug(self,keys):
-        for key in keys:
-            assert key in interval_keys
-        self.extend_chord(self.interval_keys+keys, self.name)
-        return self
+        """
+        Augmented diatonic scale tone of chords, in broadest definition it will be an altered chord.
+        An altered chord is a chord with one or more notes from the diatonic scale
+        replaced by a neighboring pitch in the chromatic scale. Thus the note must be a nonchord tone.
 
-    def add(self,intervals):
-        name = self.name + '_add' + ''.join([i[1:] for i in intervals])
-        self.extend_chord(self.interval_keys+intervals, name)
-        return self
+        >>> CM = Major_Triad(do)
+        >>> CM.aug(['P5'])
+        >>> CM
+        Major_Triad_aug5: [0, 4, 8]
+        >>> CM.default()
+        >>> CM.aug([])
+        >>> CM
+        Major_Triad: [0, 4, 7]
+        >>> CM.aug(['M9'])
+        >>> CM
+        Major_Triad: [0, 4, 7]
+        >>> CM.add(['M9'])
+        >>> CM.aug(['M9'])
+        >>> CM
+        Major_Triad_add9_aug9: [0, 4, 7, 15]
+        >>> CM.aug(['M9'])
+        >>> CM
+        Major_Triad_add9_aug9: [0, 4, 7, 15]
+        """
+        new_interval_keys = self.interval_keys
+        new_name = self.name
+        for key in [k for k in keys if k in self.interval_keys[:]]:
+            distance = self.find_interval(key)
+            new_key = self.find_interval_keys(distance + 1)
+            new_interval_keys = [new_key[0] if i == key else i for i in self.interval_keys[:]]
+            new_name = self.name + ''.join(['_aug' + i[1:] for i in keys])
+        self.extend_chord(new_interval_keys, new_name)
+
+    def dim(self,keys):
+        """
+        diminished diatonic scale tone of chords, refer to aug()
+
+        >>> CM = Major_Triad(do)
+        >>> CM.dim(['P5'])
+        >>> CM
+        Major_Triad_dim5: [0, 4, 6]
+        >>> CM.default()
+        >>> CM.dim([])
+        >>> CM
+        Major_Triad: [0, 4, 7]
+        >>> CM.dim(['M9'])
+        >>> CM
+        Major_Triad: [0, 4, 7]
+        >>> CM.add(['M9'])
+        >>> CM.dim(['M9'])
+        >>> CM
+        Major_Triad_add9_dim9: [0, 4, 7, 13]
+        >>> CM.dim(['M9'])
+        >>> CM
+        Major_Triad_add9_dim9: [0, 4, 7, 13]
+        """
+        new_interval_keys = self.interval_keys
+        new_name = self.name
+        for key in [k for k in keys if k in self.interval_keys[:]]:
+            distance = self.find_interval(key)
+            new_key = self.find_interval_keys(distance - 1)
+            new_interval_keys = [new_key[0] if i == key else i for i in self.interval_keys[:]]
+            new_name = self.name + ''.join(['_dim' + i[1:] for i in keys])
+        self.extend_chord(new_interval_keys, new_name)
+
+    def invertion(self,bass):
+        """
+        There are inverted chords, inverted melodies, inverted intervals,and (in counterpoint) inverted voices.
+        The concept of inversion also plays a role in musical set theory.
+
+        An interval is inverted by raising or lowering either of the notes using displacement of
+        the octave (or octaves) so that both retain their names (pitch class).
+        For example, the inversion of an interval consisting of a C with an E above
+        it is an E with a C above it – to work this out, the C may be moved up,
+        the E may be lowered, or both may be moved.
+
+        Under inversion, perfect intervals remain perfect, major intervals become minor and vice versa,
+        augmented intervals become diminished and vice versa.
+        """
+
+        """ add your code """
     def on(self,bases):
+        """
+        On chord is an inverted chords. For example C Major chord(C,E,G) on G means
+        its bass note is G called ConG(G,C,E) is the first invertion of C.
+        But there are some extra version like ConF(F,C,E,G)
+        We called it extra invertion different to normal invertion.
+        """
         self.bases = bases
 
     def set_bass(self,note):
-        assert note in self.bases
-        self.bass = note
+        """
+        Set the bass note, it must be the lowest tone in the chord
+        """
+        if note in self.bases:
+            self.bass = note
+            """ add your code """
+        else:
+            print("bass must be the lowest tone")
 
     def start_with(self,note,bass=None):
+        """
+        make chord from any note.
+        (e.g. major triad start with C4 is [C4,E4,G4] are chord C,
+        major triad start with D4 is [D4,Fs4,A4] are chord D,
+        dominant seventh start with C4 and the bass is G3 means [G3,C4,E4,G4,As4] are chord C7onG.)
+        """
         Scale.start_with(self,note)
         if bass is None:
             self.set_bass(note)
@@ -53,6 +166,8 @@ class Chord(Scale):
 class Major_Triad(Chord):
     name = 'Major_Triad'
     interval_keys = ['P1','M3','P5']
+    def default(self):
+        self.extend_chord(Major_Triad.interval_keys,Major_Triad.name)
     def dominant_seventh(self):
         self.extend_chord(self.interval_keys+['m7'],'Dominant_seventh')
         return self
@@ -134,8 +249,11 @@ CaugM7 = Aug_Triad(do).major_seventh()
 Cdom9 = Major_Triad(do).dominant_ninth()
 Cdom13 = Major_Triad(do).dominant_thirteenth()
 Cdom11 = Major_Triad(do).dominant_eleventh()
-Cadd9 = Major_Triad(do).add(['M9'])
-Cadd11 = Major_Triad(do).add(['P11'])
-C69 = Major_Triad(do).add(['M6','M9'])
+Cadd9 = Major_Triad(do)
+Cadd9.add(['M9'])
+Cadd11 = Major_Triad(do)
+Cadd11.add(['P11'])
+C69 = Major_Triad(do)
+C69.add(['M6','M9'])
 Csus2 = Major_Triad(do).sus2()
 Csus4 = Major_Triad(do).sus4()
