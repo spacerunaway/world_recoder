@@ -13,7 +13,7 @@ class Note(object):
     (e.g., half, twice, or four times)are perceived as very similar.
     Because of that, all notes with these kinds of relations can be grouped under the same pitch class.
     """
-    def __init__(self,name,pitch,num=0,hz=0):
+    def __init__(self,name,pitch,num=0,hz=1):
         self.name = name
         self.pitch = pitch
         self.num = num

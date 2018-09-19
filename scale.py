@@ -48,21 +48,32 @@ class Scale(object):
         [0, 24, 9, 9]
         """
         return [INTERVAL.get(i) for i in keys if i in INTERVAL]
-    def find_interval_keys(self,value):
+    def find_interval_keys(self,value,ope=None):
         """
         find sorted INTERVAL keys by its value
 
         >>> s = Scale([])
         >>> s.find_interval_keys(0)
-        ['P1']
+        'P1'
         >>> s.find_interval_keys(24)
-        ['P15']
-        >>> s.find_interval_keys(18)
-        ['A11', 'd12']
+        'P15'
+        >>> s.find_interval_keys(18,'aug')
+        'A11'
+        >>> s.find_interval_keys(18,'dim')
+        'd12'
+        >>> s.find_interval_keys(9,'aug')
+        'M6'
+        >>> s.find_interval_keys(15,'dim')
+        'm10'
         >>> s.find_interval_keys(-1)
-        []
         """
-        return sorted([k for k,v in INTERVAL.items() if v == value])
+        keys = sorted([k for k,v in INTERVAL.items() if v == value])
+        if len(keys) == 0:
+            return None
+        elif len(keys) > 1 and ope == 'dim':
+            return keys[1]
+        else:
+            return keys[0] # len(keys) == 1
     def start_with(self,note):
         """
         make scale from any note.
