@@ -15,7 +15,6 @@ class Scale(object):
     """
     name = 'UnknowScale'
     interval_keys = []
-    members = []
     def __init__(self,interval_keys):
         self.intervals = self.find_intervals(interval_keys)
         self.interval_keys = interval_keys
@@ -99,7 +98,43 @@ class Scale(object):
         except IndexError:
             print("can't make scale start with {0}".format(note))
 
-class Major_Scale(Scale):
+class Key(object):
+    """
+    Key is known as [do,re,mi,fa,so,la,si,do] like C major.
+    Every major and minor keys has a relationship with other keys, some of them are close relative.
+    And have four closest relative keys called RelativeKey, ParallelKey, DominantKey, and SubdominantKey.
+    e.g.
+    C major (or the key of C) is a major scale based on C, with the pitches C, D, E, F, G, A, and B.
+    Its dominant key is G Major and its subdominant key is F Major.
+    Its relative minor is A minor and its parallel minor is C minor.
+    """
+    triad = []
+    relative_key = None
+    parallel_key = None
+    dominant_key = None
+    subdominant_key = None
+
+    def add_relative(self,key):
+        if type(key) == Key:
+            self.relative_key = key
+    def add_parallel(self,key):
+        if type(key) == Key:
+            self.parallel_key = key
+    def add_dominant(self,key):
+        if type(key) == Key:
+            self.dominant_key = key
+    def add_subdominant(self,key):
+        if type(key) == Key:
+            self.subdominant_key = key
+    def add_allrelation(self,r,p,d,s):
+        self.add_relative(r)
+        self.add_parallel(p)
+        self.add_dominant(d)
+        self.add_subdominant(s)
+    def add_triad(self,triad):
+        self.triad = triad
+
+class Major_Scale(Scale,Key):
     """
     The major scale (or Ionian scale) is one of the most commonly used musical scales,
     It is one of the diatonic scales. Like many musical scales, it is made up of seven notes:
@@ -123,7 +158,7 @@ class Melodic_minor_Scale(Scale):
     name = 'Melodic_minor_Scale'
     interval_keys = ['P1','M2','m3','P4','P5','M6','M7','P8','m7','m6','P5','P4','m3','M2','P1']
 
-class minor_Scale(Nutural_minor_Scale,Harmonic_minor_Scale,Melodic_minor_Scale):
+class minor_Scale(Nutural_minor_Scale,Harmonic_minor_Scale,Melodic_minor_Scale,Key):
     """
     In music theory, the term minor scale refers to three scale formations –
     the natural minor scale, the harmonic minor scale, and the melodic minor scale (ascending or descending)
@@ -174,8 +209,3 @@ class minor_Scale(Nutural_minor_Scale,Harmonic_minor_Scale,Melodic_minor_Scale):
         str_h = '{0}: {1}'.format(Harmonic_minor_Scale.name, self.harmonic_intervals)
         str_m = '{0}: {1}'.format(Melodic_minor_Scale.name, self.melodic_intervals)
         return '{0}\n{1}\n{2}'.format(str_n,str_h,str_m)
-
-c_major = Major_Scale(do)
-c_major.start_with(C4)
-c_minor = minor_Scale(do)
-c_minor.start_with(C4,'nutural')

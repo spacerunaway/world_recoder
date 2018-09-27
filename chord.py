@@ -22,7 +22,12 @@ class Chord(Scale):
         if hasattr(self,'bass'):
             str_members = '\n{0} on {1}'.format(self.members, self.bass)
         return '{0}{1}'.format(str_name, str_members)
-
+    def __eq__(self,y):
+        if self.interval_keys != y.interval_keys:
+            return False
+        if self.roots != y.roots:
+            return False
+        return True
     def addroots(self,roots):
         self.roots = roots
         if self.bases is None:
@@ -35,16 +40,16 @@ class Chord(Scale):
         ninth(second) or eleventh (fourth) or a combination of the three.
 
         >>> CM = Major_Triad(do)
-        >>> CM.add(['M9'])
+        >>> CM = CM.add(['M9'])
         >>> CM
         Major_Triad_add9: [0, 4, 7, 14]
         >>> CM.default()
-        >>> CM.add([])
+        >>> CM = CM.add([])
         >>> CM
         Major_Triad: [0, 4, 7]
-        >>> CM.add(['M6','M9'])
-        >>> CM.add(['P11'])
-        >>> CM.add(['M6','M9'])
+        >>> CM = CM.add(['M6','M9'])
+        >>> CM = CM.add(['P11'])
+        >>> CM = CM.add(['M6','M9'])
         >>> CM
         Major_Triad_add6_add9_add11: [0, 4, 7, 9, 14, 17]
         """
@@ -71,7 +76,7 @@ class Chord(Scale):
         >>> CM.aug(['M9'])
         >>> CM
         Major_Triad: [0, 4, 7]
-        >>> CM.add(['M9'])
+        >>> CM = CM.add(['M9'])
         >>> CM.aug(['P5','M9'])
         >>> CM
         Major_Triad_add9_aug5_aug9: [0, 4, 8, 15]
@@ -103,7 +108,7 @@ class Chord(Scale):
         >>> CM.dim(['M9'])
         >>> CM
         Major_Triad: [0, 4, 7]
-        >>> CM.add(['M9'])
+        >>> CM = CM.add(['M9'])
         >>> CM.dim(['P5','M9'])
         >>> CM
         Major_Triad_add9_dim5_dim9: [0, 4, 6, 13]
@@ -183,21 +188,21 @@ class Major_Triad(Chord):
     def default(self):
         self.rebuild_chord(Major_Triad.interval_keys,Major_Triad.name)
     def add(self,intervals):
-        new_chord = copy.deepcopy(self)
+        new_chord = copy.copy(self)
         Chord.add(new_chord,intervals)
         return new_chord
     def dominant_seventh(self):
-        new_chord = copy.deepcopy(self)
+        new_chord = copy.copy(self)
         interval_keys = Major_Triad.interval_keys+['m7']
         new_chord.rebuild_chord(interval_keys,'Dominant_seventh')
         return new_chord
     def major_seventh(self):
-        new_chord = copy.deepcopy(self)
+        new_chord = copy.copy(self)
         interval_keys = Major_Triad.interval_keys+['M7']
         new_chord.rebuild_chord(interval_keys,'Major_seventh')
         return new_chord
     def sixth(self):
-        new_chord = copy.deepcopy(self)
+        new_chord = copy.copy(self)
         interval_keys = Major_Triad.interval_keys+['M6']
         new_chord.rebuild_chord(interval_keys,'Major_sixth')
         return new_chord
@@ -217,12 +222,12 @@ class Major_Triad(Chord):
         new_chord.rebuild_chord(interval_keys,'Dominant_thirteenth')
         return new_chord
     def sus2(self):
-        new_chord = copy.deepcopy(self)
+        new_chord = copy.copy(self)
         self.interval_keys[1] = 'M2'
         new_chord.rebuild_chord(self.interval_keys,'Suspended_second')
         return new_chord
     def sus4(self):
-        new_chord = copy.deepcopy(self)
+        new_chord = copy.copy(self)
         self.interval_keys[1] = 'P4'
         new_chord.rebuild_chord(self.interval_keys,'Suspended_fourth')
         return new_chord
@@ -231,31 +236,41 @@ class Minor_Triad(Chord):
     name = 'minor_Triad'
     interval_keys = ['P1','m3','P5']
     def seventh(self):
-        new_chord = copy.deepcopy(self)
+        new_chord = copy.copy(self)
         interval_keys = Minor_Triad.interval_keys+['m7']
         new_chord.rebuild_chord(interval_keys,'minor_seventh')
         return new_chord
     def major_seventh(self):
-        new_chord = copy.deepcopy(self)
+        new_chord = copy.copy(self)
         interval_keys = Minor_Triad.interval_keys+['M7']
         new_chord.rebuild_chord(interval_keys,'minor_major_seventh')
         return new_chord
     def sixth(self):
-        new_chord = copy.deepcopy(self)
+        new_chord = copy.copy(self)
         interval_keys = Minor_Triad.interval_keys+['M6']
         new_chord.rebuild_chord(interval_keys,'minor_sixth')
+        return new_chord
+    def b5(self):
+        new_chord = copy.copy(self)
+        interval_keys = ['P1','m3','d5']
+        new_chord.rebuild_chord(interval_keys,'minor_flat5')
+        return new_chord
+    def seventh_b5(self):
+        new_chord = copy.copy(self)
+        interval_keys = ['P1','m3','d5','m7']
+        new_chord.rebuild_chord(interval_keys,'minor_seventh_flat5')
         return new_chord
 
 class Aug_Triad(Chord):
     name = 'Aug_Triad'
     interval_keys = ['P1','M3','A5']
     def seventh(self):
-        new_chord = copy.deepcopy(self)
+        new_chord = copy.copy(self)
         interval_keys = Aug_Triad.interval_keys+['m7']
         new_chord.rebuild_chord(interval_keys,'Augmented_seventh')
         return new_chord
     def major_seventh(self):
-        new_chord = copy.deepcopy(self)
+        new_chord = copy.copy(self)
         interval_keys = Aug_Triad.interval_keys+['M7']
         new_chord.rebuild_chord(interval_keys,'Augmented_major_seventh')
         return new_chord
@@ -264,12 +279,12 @@ class Dim_Triad(Chord):
     name = 'dim_Triad'
     interval_keys = ['P1','m3','d5']
     def seventh(self):
-        new_chord = copy.deepcopy(self)
+        new_chord = copy.copy(self)
         interval_keys = Dim_Triad.interval_keys+['d7']
         new_chord.rebuild_chord(interval_keys,'diminished_seventh')
         return new_chord
     def half_seventh(self):
-        new_chord = copy.deepcopy(self)
+        new_chord = copy.copy(self)
         interval_keys = Dim_Triad.interval_keys+['m7']
         new_chord.rebuild_chord(interval_keys,'diminished_seventh')
         return new_chord
