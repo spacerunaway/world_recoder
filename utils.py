@@ -54,6 +54,47 @@ def sum_cpds(cpds):
     {'start': {'C': 2}, 'C': {'Am': 4, 'D': 1}, 'Am': {'F': 4}, 'F': {'G': 3, 'G7': 1}, 'G': {'C': 2, 'Em': 1, 'end': 1}, 'G7': {'end': 1}, 'Em': {'C': 1}, 'D': {'D7': 1}, 'D7': {'G': 1}}
     """
 
+def summary_as_triad(d):
+    """
+    Cadd9 -> C
+    CM7 -> C
+    C7 -> C7
+    Cm -> Cm
+    Caug7 -> Caug
+    Cm6 -> Cm
+    ConG -> C
+    """
+
+def summary_chord_type(d):
+    """
+    C -> traid
+    Cm -> traid
+    Caug -> traid
+    Cdim -> traid
+    C7 -> dominant seventh
+    CM7 -> seventh
+    Cadd9 -> tension
+    C69 -> tension sixth
+    Cmb5 -> dominant
+    C7sus4 -> suspend dominant seventh
+    """
+
+def parse_cpd_as_TSD(cpd):
+    """
+    I = T
+    II = S
+    III = T
+    IV = S
+    V = D
+    V7 = D
+    I2 -> V7 = D
+    VI = T
+    VII = D
+    others = EXTRA
+    [T - S - D - T - E - S -D]
+    """
+
+
 def parse_chordprogression(chordprogression):
     link_chords(chordprogression)
-    recomand_dict(chordprogression)
+    cpd(chordprogression)
