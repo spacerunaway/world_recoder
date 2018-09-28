@@ -89,6 +89,7 @@ def summary_as_triad(d):
 def summary_chord_type(d):
     """
     C -> traid
+    ConG -> traid onchord
     Cm -> traid
     Caug -> traid
     Cdim -> traid
@@ -114,8 +115,3 @@ def parse_cpd_as_TSD(cpd):
     others = EXTRA
     [T - S - D - T - E - S -D]
     """
-
-
-def parse_chordprogression(chordprogression):
-    link_chords(chordprogression)
-    cpd(chordprogression)
