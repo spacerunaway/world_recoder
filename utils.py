@@ -53,6 +53,27 @@ def sum_cpds(cpds):
     >>> sum_d
     {'start': {'C': 2}, 'C': {'Am': 4, 'D': 1}, 'Am': {'F': 4}, 'F': {'G': 3, 'G7': 1}, 'G': {'C': 2, 'Em': 1, 'end': 1}, 'G7': {'end': 1}, 'Em': {'C': 1}, 'D': {'D7': 1}, 'D7': {'G': 1}}
     """
+    sum_result = {}
+    for item in cpds:
+        sum_2_cpds(item,sum_result)
+    return sum_result
+
+def sum_2_cpds(cpd_a,cpd_b):
+    """
+    Sum 2 dicts of cpd and store the result in the second parameter
+    assistant to sum_cpds(List_of_dics)
+    """
+    for item in cpd_a.keys():
+        if item not in cpd_b.keys():
+            cpd_b[item] = dict(cpd_a[item])
+        else:
+            for chords in cpd_a[item].keys():
+                if chords not in cpd_b[item].keys():
+                    cpd_b[item][chords] = cpd_a[item][chords]
+                else:
+                    cpd_b[item][chords] += cpd_a[item][chords]
+    return cpd_b
+
 
 def summary_as_triad(d):
     """
