@@ -92,6 +92,9 @@ class LinkedList:
     def __reversed__(self):
         return LinkedListReverseIterator(self)
 
+    def __repr__(self):
+        return self.display()
+
     def reverse(self):
         pass
     def index(self,data):
@@ -144,8 +147,37 @@ class LinkedList:
             node.prev.next = node
             self.last = node
     def display(self):
-        pass
-
+        """
+        >>> n2 = Node(CHORD['D'],G_Major,'D')
+        >>> n3 = Node(CHORD['C'],G_Major,'C')
+        >>> l = LinkedList()
+        >>> l.display()
+        ''
+        >>> l.append(n2)
+        >>> l.append(n3)
+        >>> l.display()
+        'D - C'
+        >>> n2
+        None <- D -> C
+        >>> n3
+        D <- C -> None
+        >>> n3 = Node(CHORD['C'],G_Major,'C')
+        >>> l.append(n3)
+        >>> l.display()
+        'D - C - C'
+        >>> n3.prev
+        D <- C -> C
+        """
+        res = ""
+        if self.head == None:
+            return res
+        else:
+            node = self.head
+            while node != None:
+                res += " - {0}".format(node.name)
+                node = node.next
+        return res[3:]
+    
 class LinkedListIterator(Iterator):
     def __init__(self, linkedlist):
         self.node = linkedlist.head
