@@ -30,7 +30,7 @@ class Chord(Scale):
         return True
     def addroots(self,roots):
         self.roots = roots
-        if self.bases is None:
+        if self.bases == None:
             self.bases = roots
 
     def add(self,intervals):
@@ -169,7 +169,7 @@ class Chord(Scale):
         dominant seventh start with C4 and the bass is G3 means [G3,C4,E4,G4,As4] are chord C7onG.)
         """
         Scale.start_with(self,note)
-        if bass is None:
+        if bass == None:
             self.set_bass(note)
         else:
             self.set_bass(bass)

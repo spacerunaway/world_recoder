@@ -103,6 +103,7 @@ def summary_chord_type(d):
 
 def parse_cpd_as_TSD(cpd):
     """
+    Chords has some role in their scale(key) like Tonic,Subdominant,Dominant
     I = T
     II = S
     III = T
