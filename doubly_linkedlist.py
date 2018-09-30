@@ -102,7 +102,7 @@ class LinkedList:
         pass
     def remove(self,data):
         pass
-    def extend(self,data):
+    def extend(self,linkedlist):
         pass
     def pop(self):
         pass
@@ -138,10 +138,11 @@ class LinkedList:
         node = data
         if self.head == None:
             self.head = node
+            self.last = node
         else:
-            node.next = self.head
-            node.next.prev = node
-            self.head = node
+            node.prev = self.last
+            node.prev.next = node
+            self.last = node
     def display(self):
         pass
 
