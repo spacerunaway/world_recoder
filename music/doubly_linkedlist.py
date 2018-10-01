@@ -1,6 +1,6 @@
 from collections import Iterator
 
-class Node:
+class LinkedChord:
     def __init__(self,chord,key,name):
         self.chord = chord
         self.key = key
@@ -27,7 +27,7 @@ class LinkedList:
     def __contains__(self,node):
         """ maybe need fix sometime """
         for iterator in self:
-            if iterator.chord == node.chord:
+            if iterator.name == node.name:
                 return True
     def __iter__(self):
         return LinkedListIterator(self)
@@ -40,8 +40,8 @@ class LinkedList:
         >>> l = LinkedList()
         >>> len(l)
         0
-        >>> n2 = Node(CHORD['C'],G_Major,'C')
-        >>> n3 = Node(CHORD['D'],G_Major,'D')
+        >>> n2 = LinkedChord(CHORD['C'],G_Major,'C')
+        >>> n3 = LinkedChord(CHORD['D'],G_Major,'D')
         >>> l.append_left(n3)
         >>> len(l)
         1
@@ -65,8 +65,8 @@ class LinkedList:
         >>> C_Major = 'C_Major_Scale'
         >>> G_Major = 'G_Major_Scale'
         >>> l = LinkedList()
-        >>> n2 = Node(CHORD['C'],G_Major,'C')
-        >>> n3 = Node(CHORD['D'],G_Major,'D')
+        >>> n2 = LinkedChord(CHORD['C'],G_Major,'C')
+        >>> n3 = LinkedChord(CHORD['D'],G_Major,'D')
         >>> l.append(n3)
         >>> l.append(n2)
         >>> l[0].name
@@ -80,8 +80,6 @@ class LinkedList:
         """
         if type(index) != int:
             raise TypeError
-        if index < -len(self) or index >= len(self):
-            raise IndexError
         if self.head == None:
             raise IndexError
 
@@ -105,9 +103,9 @@ class LinkedList:
         >>> C_Major = 'C_Major_Scale'
         >>> G_Major = 'G_Major_Scale'
         >>> l = LinkedList()
-        >>> n2 = Node(CHORD['C'],G_Major,'C')
-        >>> n3 = Node(CHORD['D'],G_Major,'D')
-        >>> n4 = Node(CHORD['G7'],G_Major,'G7')
+        >>> n2 = LinkedChord(CHORD['C'],G_Major,'C')
+        >>> n3 = LinkedChord(CHORD['D'],G_Major,'D')
+        >>> n4 = LinkedChord(CHORD['G7'],G_Major,'G7')
         >>> l.append(n3)
         >>> l.append(n2)
         >>> l[1]
@@ -174,15 +172,15 @@ class LinkedList:
         >>> C_Major = 'C_Major_Scale'
         >>> G_Major = 'G_Major_Scale'
         >>> l = LinkedList()
-        >>> n2 = Node(CHORD['C'],G_Major,'C')
-        >>> n3 = Node(CHORD['D'],G_Major,'D')
+        >>> n2 = LinkedChord(CHORD['C'],G_Major,'C')
+        >>> n3 = LinkedChord(CHORD['D'],G_Major,'D')
         >>> l.append_left(n3)
         >>> l.append_left(n2)
         >>> l.head.name
         'C'
         >>> l.last.name
         'D'
-        >>> n3 = Node(CHORD['G7'],C_Major,'G7')
+        >>> n3 = LinkedChord(CHORD['G7'],C_Major,'G7')
         >>> l.append_left(n3)
         >>> l.last.prev.prev.name
         'G7'
@@ -209,8 +207,8 @@ class LinkedList:
         >>> CHORD = dict({'C':'C_chord','D':'D_chord','G7':'DomG7'})
         >>> C_Major = 'C_Major_Scale'
         >>> G_Major = 'G_Major_Scale'
-        >>> n2 = Node(CHORD['D'],G_Major,'D')
-        >>> n3 = Node(CHORD['C'],G_Major,'C')
+        >>> n2 = LinkedChord(CHORD['D'],G_Major,'D')
+        >>> n3 = LinkedChord(CHORD['C'],G_Major,'C')
         >>> l = LinkedList()
         >>> l.display()
         ''
@@ -222,7 +220,7 @@ class LinkedList:
         None <- D -> C
         >>> n3
         D <- C -> None
-        >>> n3 = Node(CHORD['C'],G_Major,'C')
+        >>> n3 = LinkedChord(CHORD['C'],G_Major,'C')
         >>> l.append(n3)
         >>> l.display()
         'D - C - C'

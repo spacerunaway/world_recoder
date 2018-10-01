@@ -29,5 +29,3 @@ C_Major = Major_Scale(chi)
 C_minor = minor_Scale(chi)
 
 [C_Major,G_Major,D_Major,A_Major,E_Major,B_Major]
-
-{'C':{'Dm':3,'Am':5,'Em':2,'G7':10,'F':6,'C':2}}

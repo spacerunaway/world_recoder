@@ -39,7 +39,7 @@ def link_chords(chordprogression):
                 chord = item
             else:
                 chord = CHORD[item]
-            node = Node(chord,key,item)
+            node = LinkedChord(chord,key,item)
             res.append(node)
     return res
 def parse_chordprogression(chordprogression):
