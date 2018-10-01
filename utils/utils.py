@@ -1,3 +1,5 @@
+import sys
+sys.path.append('../data')
 from scale_data import *
 from chord_data import *
 START = 'start'
@@ -115,4 +117,11 @@ def parse_cpd_as_TSD(cpd):
     VII = D
     others = EXTRA
     [T - S - D - T - E - S -D]
+    """
+
+def parse_chord_distance():
+    """
+    C in C_Major distance is 0
+    Dm in C_Major distance is 0
+    D in C_Major distance is 1
     """

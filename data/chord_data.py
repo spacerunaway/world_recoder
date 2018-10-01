@@ -1,3 +1,5 @@
+import sys
+sys.path.append('../music')
 from chord import *
 """ C Chords"""
 # C basic

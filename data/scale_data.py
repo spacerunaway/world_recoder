@@ -1,3 +1,5 @@
+import sys
+sys.path.append('../music')
 from scale import *
 
 C_Major = Major_Scale(do)

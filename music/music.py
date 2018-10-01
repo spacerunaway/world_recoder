@@ -1,4 +1,7 @@
+import sys
+sys.path.append('../utils')
 from utils import *
+from doubly_linkedlist import *
 
 def link_chords(chordprogression):
     """
@@ -9,25 +12,36 @@ def link_chords(chordprogression):
     >>> c_p2 = [START,C_Major,'C','Am','F','G','C','Am','F','G',G_Major,'Em','C','D','D7','G',END]
     >>> l1 = link_chords(c_p1)
     >>> l1
-    start -> C -> Am -> F -> G -> C -> Am -> F -> G7 -> end
+    start - C - Am - F - G - C - Am - F - G7 - end
     >>> l2 = link_chords(c_p2)
     >>> l2
-    {'start': {'C': 1}, 'C': {'Am': 2, 'D': 1}, 'Am': {'F': 2}, 'F': {'G': 2}, 'G': {'C': 1, 'Em': 1, 'end': 1}, 'Em': {'C': 1}, 'D': {'D7': 1}, 'D7': {'G': 1}}
+    start - C - Am - F - G - C - Am - F - G - Em - C - D - D7 - G - end
+    >>> l2[8].key is C_Major
+    True
+    >>> l2[8].chord == CHORD['G']
+    True
+    >>> l2[9].key is G_Major
+    True
+    >>> l2[9].chord == CHORD['Em']
+    True
     >>> c_p3 = [C_Major,C_Major,START,'C',END,START,START,END,'F',G_Major]
     >>> l3 = link_chords(c_p3)
     >>> l3
-    {'start': {'C': 1, 'start': 1, 'end': 1}, 'C': {'end': 1}, 'end': {'start': 1, 'F': 1}}
+    start - C - end - start - start - end - F
     """
     key = None
-    prev = LinkedChord(None,key,START)
+    res = LinkedList()
     for item in chordprogression:
-        if type(item) is Key:
+        if type(item) is Major_Scale or type(item) is minor_Scale:
             key = item
         else:
-            chord = LinkedChord(CHORD[item],key,item)
-            prev.append(chord)
-            prev = chord
-
+            if item not in CHORD:
+                chord = item
+            else:
+                chord = CHORD[item]
+            node = Node(chord,key,item)
+            res.append(node)
+    return res
 def parse_chordprogression(chordprogression):
     link_chords(chordprogression)
     cpd(chordprogression)

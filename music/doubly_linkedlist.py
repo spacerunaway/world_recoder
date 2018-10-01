@@ -1,4 +1,3 @@
-from utils import *
 from collections import Iterator
 
 class Node:
@@ -34,6 +33,22 @@ class LinkedList:
         return LinkedListIterator(self)
 
     def __len__(self):
+        """
+        >>> CHORD = dict({'C':'C_chord','D':'D_chord','G7':'DomG7'})
+        >>> C_Major = 'C_Major_Scale'
+        >>> G_Major = 'G_Major_Scale'
+        >>> l = LinkedList()
+        >>> len(l)
+        0
+        >>> n2 = Node(CHORD['C'],G_Major,'C')
+        >>> n3 = Node(CHORD['D'],G_Major,'D')
+        >>> l.append_left(n3)
+        >>> len(l)
+        1
+        >>> l.append_left(n2)
+        >>> len(l)
+        2
+        """
         if self.head == None:
             return 0
         else:
@@ -45,6 +60,24 @@ class LinkedList:
         return length
 
     def __getitem__(self,index):
+        """
+        >>> CHORD = dict({'C':'C_chord','D':'D_chord','G7':'DomG7'})
+        >>> C_Major = 'C_Major_Scale'
+        >>> G_Major = 'G_Major_Scale'
+        >>> l = LinkedList()
+        >>> n2 = Node(CHORD['C'],G_Major,'C')
+        >>> n3 = Node(CHORD['D'],G_Major,'D')
+        >>> l.append(n3)
+        >>> l.append(n2)
+        >>> l[0].name
+        'D'
+        >>> l[1].name
+        'C'
+        >>> l[-1].name
+        'C'
+        >>> l[-2].name
+        'D'
+        """
         if type(index) != int:
             raise TypeError
         if index < -len(self) or index >= len(self):
@@ -65,6 +98,28 @@ class LinkedList:
         return res
 
     def __setitem__(self,index,data):
+        """
+        Not change pointor to the new one, just simply change the inside data.
+
+        >>> CHORD = dict({'C':'C_chord','D':'D_chord','G7':'DomG7'})
+        >>> C_Major = 'C_Major_Scale'
+        >>> G_Major = 'G_Major_Scale'
+        >>> l = LinkedList()
+        >>> n2 = Node(CHORD['C'],G_Major,'C')
+        >>> n3 = Node(CHORD['D'],G_Major,'D')
+        >>> n4 = Node(CHORD['G7'],G_Major,'G7')
+        >>> l.append(n3)
+        >>> l.append(n2)
+        >>> l[1]
+        D <- C -> None
+        >>> l[1] = n4
+        >>> l[1]
+        D <- G7 -> None
+        >>> n2
+        D <- G7 -> None
+        >>> n4
+        None <- G7 -> None
+        """
         if type(index) != int:
             raise TypeError
         if index < -len(self) or index >= len(self):
@@ -115,6 +170,9 @@ class LinkedList:
         pass
     def append_left(self,data):
         """
+        >>> CHORD = dict({'C':'C_chord','D':'D_chord','G7':'DomG7'})
+        >>> C_Major = 'C_Major_Scale'
+        >>> G_Major = 'G_Major_Scale'
         >>> l = LinkedList()
         >>> n2 = Node(CHORD['C'],G_Major,'C')
         >>> n3 = Node(CHORD['D'],G_Major,'D')
@@ -148,6 +206,9 @@ class LinkedList:
             self.last = node
     def display(self):
         """
+        >>> CHORD = dict({'C':'C_chord','D':'D_chord','G7':'DomG7'})
+        >>> C_Major = 'C_Major_Scale'
+        >>> G_Major = 'G_Major_Scale'
         >>> n2 = Node(CHORD['D'],G_Major,'D')
         >>> n3 = Node(CHORD['C'],G_Major,'C')
         >>> l = LinkedList()
@@ -177,7 +238,7 @@ class LinkedList:
                 res += " - {0}".format(node.name)
                 node = node.next
         return res[3:]
-    
+
 class LinkedListIterator(Iterator):
     def __init__(self, linkedlist):
         self.node = linkedlist.head
