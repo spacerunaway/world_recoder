@@ -1,6 +1,10 @@
 import sys
 sys.path.append('../music')
 from chord import *
+START = 'start'
+END = 'end'
+
+Default = Chord()
 """ C Chords"""
 # C basic
 CM = Major_Triad(do)
@@ -662,7 +666,7 @@ BsaugM7 = Bsaug.major_seventh()
 Bsdim7 = Bsdim.seventh()
 Bshalfdim7 = Bsdim.half_seventh()
 
-CHORD = dict({'C':CM,'Cm':Cm,'Caug':Caug,'Cdim':Cdim,'CM7':CM7,'CM6':CM6,'C7':Cdom7,'C9':Cdom9,'C11':Cdom11,'C13':Cdom13,'Cadd9':Cadd9,'C7add9':C7add9,'CM7add9':CM7add9,'Cadd11':Cadd11,'C69':C69,'Csus2':Csus2,'Csus4':Csus4,'C7sus4':C7sus4,'Cm7':Cm7,'CmM7':CmM7,'Cm6':Cm6,'Cmb5':Cmb5,'Cm7b5':Cm7b5,'Caug7':Caug7,'CaugM7':CaugM7,'Cdim7':Cdim7,'Chalfdim7':Chalfdim7
+CHORD = dict({START:Default,END:Default,'C':CM,'Cm':Cm,'Caug':Caug,'Cdim':Cdim,'CM7':CM7,'CM6':CM6,'C7':Cdom7,'C9':Cdom9,'C11':Cdom11,'C13':Cdom13,'Cadd9':Cadd9,'C7add9':C7add9,'CM7add9':CM7add9,'Cadd11':Cadd11,'C69':C69,'Csus2':Csus2,'Csus4':Csus4,'C7sus4':C7sus4,'Cm7':Cm7,'CmM7':CmM7,'Cm6':Cm6,'Cmb5':Cmb5,'Cm7b5':Cm7b5,'Caug7':Caug7,'CaugM7':CaugM7,'Cdim7':Cdim7,'Chalfdim7':Chalfdim7
 ,'D':DM,'Dm':Dm,'Daug':Daug,'Ddim':Ddim,'DM7':DM7,'DM6':DM6,'D7':Ddom7,'D9':Ddom9,'D11':Ddom11,'D13':Ddom13,'Dadd9':Dadd9,'D7add9':D7add9,'DM7add9':DM7add9,'Dadd11 ':Dadd11 ,'D69':D69,'Dsus2':Dsus2,'Dsus4':Dsus4,'D7sus4':D7sus4,'Dm7':Dm7,'DmM7':DmM7,'Dm6 ':Dm6 ,'Dmb5':Dmb5,'Dm7b5':Dm7b5,'Daug7':Daug7,'DaugM7':DaugM7,'Ddim7':Ddim7,'Dhalfdim7':Dhalfdim7
 ,'E':EM,'Em':Em,'Eaug':Eaug,'Edim':Edim,'EM7':EM7,'EM6':EM6,'E7':Edom7,'E9':Edom9,'E11':Edom11,'E13':Edom13,'Eadd9':Eadd9,'E7add9':E7add9,'EM7add9':EM7add9,'Eadd11 ':Eadd11 ,'E69':E69,'Esus2':Esus2,'Esus4':Esus4,'E7sus4':E7sus4,'Em7':Em7,'EmM7':EmM7,'Em6 ':Em6 ,'Emb5':Emb5,'Em7b5':Em7b5,'Eaug7':Eaug7,'EaugM7':EaugM7,'Edim7':Edim7,'Ehalfdim7':Ehalfdim7
 ,'F':FM,'Fm':Fm,'Faug':Faug,'Fdim':Fdim,'FM7':FM7,'FM6':FM6,'F7':Fdom7,'F9':Fdom9,'F11':Fdom11,'F13':Fdom13,'Fadd9':Fadd9,'F7add9':F7add9,'FM7add9':FM7add9,'Fadd11 ':Fadd11 ,'F69':F69,'Fsus2':Fsus2,'Fsus4':Fsus4,'F7sus4':F7sus4,'Fm7':Fm7,'FmM7':FmM7,'Fm6 ':Fm6 ,'Fmb5':Fmb5,'Fm7b5':Fm7b5,'Faug7':Faug7,'FaugM7':FaugM7,'Fdim7':Fdim7,'Fhalfdim7':Fhalfdim7

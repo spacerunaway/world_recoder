@@ -9,9 +9,7 @@ class Chord(Scale):
     or sequences of chord tones, may also be considered as chords.)
     """
     name = 'UnknowChord'
-    interval_keys = []
-    roots = None
-    bases = None
+    category = ['Unknow']
     def __init__(self,roots=None):
         Scale.__init__(self,self.interval_keys[:])
         self.roots = roots
@@ -180,6 +178,9 @@ class Chord(Scale):
         self.intervals = self.find_intervals(self.interval_keys)
         if self.members:
             self.start_with(self.members[0],self.bass)
+
+    def isdominant(self):
+        return 'Dominant' in self.category
 
 class Major_Triad(Chord):
     name = 'Major_Triad'

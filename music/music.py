@@ -6,8 +6,11 @@ from doubly_linkedlist import *
 def link_chords(chordprogression):
     """
     Chord progression is a sequences of chords.
-    Make a LinkedList for chords.
-
+    A valid linked_chords can be one of the following:
+    1: the chord name(str) in CHORD dict
+    2: the key(type Key)
+    and a music have to a signal of start and end.
+    
     >>> c_p1 = [START,C_Major,'C','Am','F','G','C','Am','F','G7',END]
     >>> c_p2 = [START,C_Major,'C','Am','F','G','C','Am','F','G',G_Major,'Em','C','D','D7','G',END]
     >>> l1 = link_chords(c_p1)
