@@ -179,6 +179,7 @@ class Chord(Scale):
         if self.members:
             self.start_with(self.members[0],self.bass)
 
+    @property
     def isdominant(self):
         return 'Dominant' in self.category
 
@@ -196,6 +197,7 @@ class Major_Triad(Chord):
         new_chord = copy.copy(self)
         interval_keys = Major_Triad.interval_keys+['m7']
         new_chord.rebuild_chord(interval_keys,'Dominant_seventh')
+        new_chord.category = ['Dominant','Dominant7']
         return new_chord
     def major_seventh(self):
         new_chord = copy.copy(self)
@@ -255,11 +257,13 @@ class Minor_Triad(Chord):
         new_chord = copy.copy(self)
         interval_keys = ['P1','m3','d5']
         new_chord.rebuild_chord(interval_keys,'minor_flat5')
+        new_chord.category = ['Dominant']
         return new_chord
     def seventh_b5(self):
         new_chord = copy.copy(self)
         interval_keys = ['P1','m3','d5','m7']
         new_chord.rebuild_chord(interval_keys,'minor_seventh_flat5')
+        new_chord.category = ['Dominant','Dominant7']
         return new_chord
 
 class Aug_Triad(Chord):

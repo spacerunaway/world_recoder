@@ -6,6 +6,23 @@ from chord_data import *
 def complete_keys_triad():
     return
 
+def pure_cp(cp):
+    """
+    return chord progression list only contain string expression.
+
+    >>> c_p2 = [START,C_Major,'C','Am','F','G','C','Am','F','G',G_Major,'Em','C','D','D7','G',END]
+    >>> temp = copy.copy(c_p2)
+    >>> c_p3 = [C_Major,C_Major,START,'C',END,START,START,END,'F',G_Major]
+    >>> pure = pure_cp(c_p2)
+    >>> pure
+    ['start', 'C', 'Am', 'F', 'G', 'C', 'Am', 'F', 'G', 'Em', 'C', 'D', 'D7', 'G', 'end']
+    >>> c_p2 == temp
+    True
+    >>> pure = pure_cp(c_p3)
+    >>> pure
+    ['start', 'C', 'end', 'start', 'start', 'end', 'F']
+    """
+    return [chord_name for chord_name in cp if type(chord_name) is str]
 def cpdict(cp):
     """
     Handle music is similar to natural language processing.
@@ -14,6 +31,7 @@ def cpdict(cp):
 
     >>> c_p = [START,C_Major,'C','Am','F','G','C','Am','F','G7',END]
     >>> c_p2 = [START,C_Major,'C','Am','F','G','C','Am','F','G',G_Major,'Em','C','D','D7','G',END]
+    >>> temp = copy.copy(c_p2)
     >>> d = cpdict(c_p)
     >>> d
     {'start': {'C': 1}, 'C': {'Am': 2}, 'Am': {'F': 2}, 'F': {'G': 1, 'G7': 1}, 'G': {'C': 1}, 'G7': {'end': 1}}
@@ -24,9 +42,11 @@ def cpdict(cp):
     >>> d3 = cpdict(c_p3)
     >>> d3
     {'start': {'C': 1, 'start': 1, 'end': 1}, 'C': {'end': 1}, 'end': {'start': 1, 'F': 1}}
+    >>> c_p2 == temp
+    True
     """
     res = dict()
-    cp = [chord_name for chord_name in cp if type(chord_name) is str]
+    cp = pure_cp(cp)
     i = 0
     while i < len(cp)-1:
         if cp[i] not in res.keys():
@@ -43,7 +63,7 @@ def down(name,higher):
     return a name that not contain higher str
 
     >>> s = 'Cadd9'
-    >>> higher = list('add','^','9','11','13')
+    >>> higher = ['add','^','9','11','13']
     >>> down(s,higher)
     'C'
     >>> s = 'add9'
@@ -58,8 +78,9 @@ def down(name,higher):
     """
     if type(name) is not str:
         return name
-    while name in higher:
-        name = name[0:-1] #not work need two pointor
+    for word in higher:
+        if word in name:
+            name = name.replace(word,'')
     return name
 
 def nontension_cpdict(cp):
@@ -68,9 +89,12 @@ def nontension_cpdict(cp):
     Tension -- any note that interval over perfect 8(octave)
 
     >>> c_p = [START,C_Major,'ConG','AmonC','Fadd9','G^F','C69','AmM7','F6','G7','G11','BsaugM7','BsaugM7add11',END]
+    >>> temp = copy.copy(c_p)
     >>> ntcp = nontension_cpdict(c_p)
-    >>> c_p
-    [START,C_Major,'ConG','AmonC','F','G','C6','AmM7','F6','G7','G7','BsaugM7','BsaugM7',END]
+    >>> pure_cp(ntcp)
+    ['start', 'ConG', 'AmonC', 'F', 'G', 'C6', 'AmM7', 'F6', 'G7', 'G7', 'BsaugM7', 'BsaugM7', 'end']
+    >>> c_p == temp
+    True
     """
     nontension_cp = []
     for chord_name in cp:
@@ -78,7 +102,7 @@ def nontension_cpdict(cp):
             if CHORD[chord_name].isdominant:
                 chord_name = chord_name.replace("9", "7").replace("11", "7").replace("13", "7")
         nontension_cp.append(chord_name)
-    higher = list('add','^','9','11','13')
+    higher = ['add','^','9','11','13']
     return [down(chord_name,higher) for chord_name in nontension_cp]
 
 def nonbass_cpdict(cp):
@@ -89,11 +113,14 @@ def nonbass_cpdict(cp):
                 2: the bass note on the chord (ConF F isn't contain in C)
 
     >>> c_p = [START,C_Major,'ConG','AmonC','Fadd9','G^F','C69','AmM7','F6','G7','G11','BsaugM7','BsaugM7add11',END]
-    >>> c_p = nontension_cpdict(c_p)
-    >>> c_p
-    [START,C_Major,'C','Am','Fadd9','G^F','C69','AmM7','F6','G7','G11','BsaugM7','BsaugM7add11',END]
+    >>> temp = copy.copy(c_p)
+    >>> nbcp = nonbass_cpdict(c_p)
+    >>> pure_cp(nbcp)
+    ['start', 'C', 'Am', 'Fadd9', 'G^F', 'C69', 'AmM7', 'F6', 'G7', 'G11', 'BsaugM7', 'BsaugM7add11', 'end']
+    >>> c_p == temp
+    True
     """
-    higher = list('on')
+    higher = ['on']
     return [down(chord_name,higher) for chord_name in cp]
 
 def sum_dicts(dicts,sumfx):
