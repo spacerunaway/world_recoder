@@ -1,5 +1,6 @@
 import sys
 sys.path.append('../data')
+import re as regex
 from scale_data import *
 from chord_data import *
 
@@ -60,18 +61,24 @@ def cpdict(cp):
 
 def down(name,higher):
     """
-    return a name that not contain higher str
+    return a name that not contain higher expression
 
     >>> s = 'Cadd9'
-    >>> higher = ['add','^','9','11','13']
+    >>> higher = ['add','\^','9','11','13']
     >>> down(s,higher)
     'C'
     >>> s = 'add9'
     >>> down(s,higher)
     ''
-    >>> s = 'Caug7add9add11^C'
+    >>> s = 'Caug7add9add11^ConG'
     >>> down(s,higher)
     'Caug7'
+    >>> s = 'ConGadd9add11^C'
+    >>> down(s,higher)
+    'ConG'
+    >>> s = 'G^F'
+    >>> down(s,higher)
+    'G'
     >>> s = 'start'
     >>> down(s,higher)
     'start'
@@ -80,7 +87,7 @@ def down(name,higher):
         return name
     for word in higher:
         if word in name:
-            name = name.replace(word,'')
+            name = name[0:regex.search(word,name).start()]
     return name
 
 def nontension_cpdict(cp):
@@ -102,7 +109,7 @@ def nontension_cpdict(cp):
             if CHORD[chord_name].isdominant:
                 chord_name = chord_name.replace("9", "7").replace("11", "7").replace("13", "7")
         nontension_cp.append(chord_name)
-    higher = ['add','^','9','11','13']
+    higher = ['add','\^','9','11','13']
     return [down(chord_name,higher) for chord_name in nontension_cp]
 
 def nonbass_cpdict(cp):

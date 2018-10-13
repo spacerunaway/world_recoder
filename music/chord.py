@@ -1,6 +1,7 @@
 from scale import *
 import copy
 
+CHORD_TYPE={'M':major,'m':minor,'dim','aug'}
 class Chord(Scale):
     """
     A chord is any harmonic set of pitches consisting of two or more (usually three or more) notes
@@ -123,7 +124,7 @@ class Chord(Scale):
             self.name = self.name + ''.join('_dim' + key[1:])
         self.rebuild_chord(self.interval_keys, self.name)
 
-    def invertion(self,bass):
+    def invertion(self):
         """
         There are inverted chords, inverted melodies, inverted intervals,and (in counterpoint) inverted voices.
         The concept of inversion also plays a role in musical set theory.

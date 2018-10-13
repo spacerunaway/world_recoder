@@ -18,5 +18,6 @@ class Note(object):
         self.pitch = pitch
         self.num = num
         self.Hz = hz
+        self.strength = 0
     def __repr__(self):
         return '{0}{1}'.format(self.name,self.pitch)

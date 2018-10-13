@@ -10,7 +10,7 @@ def link_chords(chordprogression):
     1: the chord name(str) in CHORD dict
     2: the key(type Key)
     and a music have to a signal of start and end.
-    
+
     >>> c_p1 = [START,C_Major,'C','Am','F','G','C','Am','F','G7',END]
     >>> c_p2 = [START,C_Major,'C','Am','F','G','C','Am','F','G',G_Major,'Em','C','D','D7','G',END]
     >>> l1 = link_chords(c_p1)
@@ -64,5 +64,12 @@ class Music(object):
         self.subtitle = subtitle
     def add_chordprogression(self,chordprogression):
         self.chordprogression = chordprogression
-    def add_category(self,categorys):
-        self.categorys = categorys
+    def add_tags(self,tags):
+        self.tags = tags
+
+class Info(object):
+    def __init__(self,key,beat,tempo=90,rhythmtype=''):
+        self.key = key
+        self.beat = beat
+        self.tempo = tempo
+        self.rhythmtype = rhythmtype
